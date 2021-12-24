@@ -15,11 +15,7 @@ class ResultList extends StatelessWidget {
           itemBuilder: (context, index) {
             final roll = diceModel.previousRolls[index];
 
-            return RollTile(
-              result: roll.result!,
-              rolls: roll.rolls!,
-              value: roll.value!,
-            );
+            return RollTile(roll: roll);
           },
           itemCount: diceModel.previousRolls.length,
         );

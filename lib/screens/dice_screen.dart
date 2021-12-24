@@ -4,6 +4,7 @@ import 'package:roll_me/components/dice_button.dart';
 import 'package:roll_me/models/dice_model.dart';
 
 import 'package:provider/provider.dart';
+import 'package:roll_me/screens/result_screen.dart';
 
 import '../constants.dart';
 
@@ -13,9 +14,30 @@ class DiceScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
-        title: Text('RollMe'),
-        backgroundColor: Colors.greenAccent,
+        title: const Text(
+          'RollMe',
+          style: TextStyle(color: kTextColor),
+        ),
+        backgroundColor: kSecondary,
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ResultScreen(),
+                ),
+              );
+            },
+            child: const Icon(
+              Icons.playlist_play,
+              color: kTextColor,
+              size: 40,
+            ),
+          )
+        ],
       ),
       // backgroundColor: lilac,
       body: Padding(
@@ -30,7 +52,7 @@ class DiceScreen extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-                  color: Colors.greenAccent,
+                  color: kSecondary,
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: const [
                     BoxShadow(
@@ -48,7 +70,7 @@ class DiceScreen extends StatelessWidget {
                     },
                     icon: const Icon(
                       Icons.remove,
-                      color: Colors.white,
+                      color: kTextColor,
                     ),
                   ),
                   const SizedBox(
@@ -57,7 +79,7 @@ class DiceScreen extends StatelessWidget {
                   Container(
                     child: Text(
                       '${context.watch<DiceModel>().numDice}',
-                      style: const TextStyle(fontSize: 40, color: Colors.white),
+                      style: const TextStyle(fontSize: 30, color: kTextColor),
                     ),
                   ),
                   const SizedBox(
@@ -69,7 +91,7 @@ class DiceScreen extends StatelessWidget {
                     },
                     icon: const Icon(
                       Icons.add,
-                      color: Colors.white,
+                      color: kTextColor,
                     ),
                   ),
                 ],

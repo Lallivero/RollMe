@@ -6,7 +6,8 @@ import 'dart:math';
 import 'package:roll_me/models/roll.dart';
 
 class DiceModel extends ChangeNotifier {
-  final List<Roll> _previousRolls = [];
+  List<Roll> _previousRolls = [];
+  Roll? _latestRoll;
 
   int _numDice = 1;
 
@@ -25,34 +26,33 @@ class DiceModel extends ChangeNotifier {
     for (int i = 0; i < _numDice; i++) {
       localResult.add(Random().nextInt(value) + 1);
     }
-    _previousRolls.insert(
-        0,
-        Roll(
-            value: value,
-            result:
-                localResult.fold(0, (previousValue, element) => previousValue! + element),
-            rolls: localResult));
+    _latestRoll = Roll(
+        value: "$_numDice" "d" "$value",
+        result: localResult.fold(0, (previousValue, element) => previousValue! + element),
+        rolls: localResult);
+    _previousRolls.insert(0, _latestRoll!);
+
     notifyListeners();
   }
 
   void rerollDice() {
-    final List<int> localResult = [];
-    int value = _previousRolls[0].value!;
-    for (int i = 0; i < _numDice; i++) {
-      localResult.add(Random().nextInt(value) + 1);
-    }
-    _previousRolls.insert(
-        0,
-        Roll(
-            value: value,
-            result:
-                localResult.fold(0, (previousValue, element) => previousValue! + element),
-            rolls: localResult));
+    int value = int.parse(_latestRoll!.value!.split('d')[1]);
+
+    rollDice(value);
+  }
+
+  void resetHistory() {
+    _previousRolls = [];
+
     notifyListeners();
   }
 
   UnmodifiableListView<Roll> get previousRolls {
     return UnmodifiableListView(_previousRolls);
+  }
+
+  Roll get latestRoll {
+    return _latestRoll!;
   }
 
   int get numDice {
